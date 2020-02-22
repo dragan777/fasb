@@ -23,7 +23,6 @@ public class CustomerService {
     }
 
     public Customer createCustomer(Customer customer){
-
         customerDao.save(customer);
         return customer;
     }
@@ -34,5 +33,10 @@ public class CustomerService {
 
     public List<Customer> getCustomersByLastName(String lastName, String orderPropName, Sort.Direction sortDirection){
         return  customerDao.findByLastName(lastName, Sort.by(sortDirection, orderPropName));
+    }
+
+    public Customer getCustomerById(int customerId){
+
+        return customerDao.findById(customerId).get();
     }
 }

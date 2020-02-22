@@ -13,7 +13,7 @@ public class Customer implements Serializable {
 
         @Id
         @GeneratedValue
-        private Long id;
+        private int id;
 
         @NotNull
         private String firstName;
@@ -26,12 +26,8 @@ public class Customer implements Serializable {
 
         private int creditClass = 2;
 
-        public Long getId() {
+        public int getId() {
                 return id;
-        }
-
-        public void setId(Long id) {
-                this.id = id;
         }
 
         public String getFirstName() {
