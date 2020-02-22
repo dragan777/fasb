@@ -12,17 +12,17 @@ import javax.sql.DataSource;
 @SpringBootApplication
 public class FasbApplication {
 
-
-
 	@Bean
 	public WebSecurityConfigurerAdapter webSecurityConfig(DataSource dataSource) {
 		return new WebSecurityConfigurerAdapter() {
 			@Override
 			protected void configure(HttpSecurity httpSecurity) throws Exception {
 				httpSecurity
-						.authorizeRequests().antMatchers("/console/**").permitAll();
-				httpSecurity.csrf().disable();
-				httpSecurity.headers().frameOptions().disable();
+						.csrf().disable()
+						.authorizeRequests().anyRequest().authenticated()
+						.and()
+						.httpBasic();
+
 			}
 		};
 	}
