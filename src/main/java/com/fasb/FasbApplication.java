@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 public class FasbApplication {
 
 
-/*
+
 	@Bean
 	public WebSecurityConfigurerAdapter webSecurityConfig(DataSource dataSource) {
 		return new WebSecurityConfigurerAdapter() {
@@ -25,7 +25,7 @@ public class FasbApplication {
 				httpSecurity.headers().frameOptions().disable();
 			}
 		};
-	}*/
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(FasbApplication.class, args);
