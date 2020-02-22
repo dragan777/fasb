@@ -1,15 +1,14 @@
 package com.fasb.api;
 
-import com.fasb.dao.CustomerDao;
+
 import com.fasb.model.Customer;
+import com.fasb.service.CustomerService;
+import org.apache.tomcat.util.codec.binary.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("api/v1/customers")
@@ -17,26 +16,28 @@ import java.util.List;
 public class CustomerController {
 
     @Autowired
-    CustomerDao customerDao;
-    //TODO LIST ALL CUSTOMERS
+    CustomerService customerService;
+
+
     @GetMapping
-    @Transactional
-    public List<Customer> getAllCustomers(){
-        return customerDao.findAll();
+    public List<Customer> getAllCustomers(@RequestParam(required = false) String lastName, @RequestParam(required = false, defaultValue = "firstName") String sortBy, @RequestParam(defaultValue = "asc", required = false) String sortDir){
+        Sort.Direction sortDirection = Sort.Direction.ASC;
+        if(sortDir.equals("desc")){
+            sortDirection = Sort.Direction.DESC;
+        }
+        if(lastName != null){
+            return customerService.getCustomersByLastName(lastName,sortBy, sortDirection);
+        }else{
+            return customerService.getCustomers(sortBy, sortDirection);
+        }
     }
 
 
-    //TODO LIST ALL CUSTOMERS
+
     @PostMapping(value = "/create")
     @Transactional
-    public Customer create(){
-        List<String> res = new ArrayList<>();
-        Customer customer = new Customer();
-        customer.setFirstName("Dragan");
-        customer.setLastName("Velkovski");
-        customer.setAddress("test");
-
-        customerDao.create(customer);
+    public Customer create(@RequestBody Customer customer){
+        customerService.createCustomer(customer);
         return customer;
     }
 
