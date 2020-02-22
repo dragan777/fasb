@@ -4,6 +4,7 @@ import com.fasb.dao.CustomerDao;
 import com.fasb.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,17 +21,25 @@ public class CustomerController {
     //TODO LIST ALL CUSTOMERS
     @GetMapping
     @Transactional
-    public List<String> getAllCustomers(){
+    public List<Customer> getAllCustomers(){
+        return customerDao.findAll();
+    }
+
+
+    //TODO LIST ALL CUSTOMERS
+    @PostMapping(value = "/create")
+    @Transactional
+    public Customer create(){
         List<String> res = new ArrayList<>();
-        res.add("just test");
         Customer customer = new Customer();
         customer.setFirstName("Dragan");
         customer.setLastName("Velkovski");
         customer.setAddress("test");
 
         customerDao.create(customer);
-        return res;
+        return customer;
     }
+
 
 
 }
