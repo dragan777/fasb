@@ -8,12 +8,10 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-public class Customer implements Serializable {
+public class Customer extends BaseEntity implements Serializable {
 
 
-        @Id
-        @GeneratedValue
-        private int id;
+
 
         @NotNull
         private String firstName;
@@ -26,9 +24,6 @@ public class Customer implements Serializable {
 
         private int creditClass = 2;
 
-        public int getId() {
-                return id;
-        }
 
         public String getFirstName() {
                 return firstName;

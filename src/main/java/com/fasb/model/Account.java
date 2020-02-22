@@ -1,25 +1,21 @@
 package com.fasb.model;
 
 
-import org.springframework.context.annotation.Primary;
+import com.fasterxml.jackson.databind.ser.Serializers;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Account {
+public class Account extends BaseEntity {
 
-    @Id
-    @GeneratedValue
-    private int id;
 
 
     @NotNull
     private Long balance;
 
+    @NotNull
     @ManyToOne
     private Customer customer;
 
@@ -31,9 +27,7 @@ public class Account {
         this.balance = balance;
     }
 
-    public int getId() {
-        return id;
-    }
+
 
     public Customer getCustomer() {
         return customer;
