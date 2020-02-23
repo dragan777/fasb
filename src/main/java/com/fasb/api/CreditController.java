@@ -39,4 +39,10 @@ public class CreditController {
     public Credit payoffCredit(@RequestBody PayoffCreditReq payoffCreditReq) {
         return creditService.payoffCredit(payoffCreditReq);
     }
+
+
+    @GetMapping(value = "/exceeded")
+    public List<Credit> getExceededCredits(){
+        return creditService.getExceededCredits();
+    }
 }

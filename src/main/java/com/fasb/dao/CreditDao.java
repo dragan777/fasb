@@ -17,6 +17,6 @@ public interface CreditDao extends JpaRepository<Credit, Integer> {
     List<Credit> findByCustomerId(int customerId);
 
 
-    @Query("select a from Credit a where a.remainingCreditAmount  <= 0")
+    @Query("select a from Credit a where a.expirationDate < sysdate")
     List<Credit> findExceededCredits();
 }

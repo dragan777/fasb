@@ -56,4 +56,14 @@ public class Customer extends BaseEntity implements Serializable {
         public void setCreditClass(int creditClass) {
                 this.creditClass = creditClass;
         }
+
+        public Customer(@NotNull String firstName, @NotNull String lastName, @NotNull String address, int creditClass) {
+                this.firstName = firstName;
+                this.lastName = lastName;
+                this.address = address;
+                this.creditClass = creditClass;
+        }
+
+        public Customer() {
+        }
 }

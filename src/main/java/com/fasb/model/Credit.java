@@ -4,6 +4,8 @@ package com.fasb.model;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class Credit  extends BaseEntity{
@@ -17,6 +19,8 @@ public class Credit  extends BaseEntity{
     private Long originalCreditAmount;
 
     private Long remainingCreditAmount;
+
+    private LocalDateTime expirationDate;
 
     @NotNull
     @ManyToOne
@@ -62,14 +66,24 @@ public class Credit  extends BaseEntity{
         this.customer = customer;
     }
 
+    public LocalDateTime getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(LocalDateTime expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
     public Credit() {
     }
 
-    public Credit(int originalTerm, int remainingTerm, Long originalCreditAmount, Long remainingCreditAmount, Customer customer) {
+    public Credit(int originalTerm, int remainingTerm, Long originalCreditAmount, Long remainingCreditAmount, Customer customer, LocalDateTime expirationDate) {
         this.originalTerm = originalTerm;
         this.remainingTerm = remainingTerm;
         this.originalCreditAmount = originalCreditAmount;
         this.remainingCreditAmount = remainingCreditAmount;
         this.customer = customer;
+        this.expirationDate = expirationDate;
     }
+
 }

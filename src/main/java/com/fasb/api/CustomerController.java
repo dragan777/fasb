@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,12 +57,15 @@ public class CustomerController {
     @PostMapping(value = "/createCredit/{customerID}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Credit createCredit(@PathVariable("customerID") final int customerID, @RequestBody Credit submittedCredit){
         Customer customer = customerService.getCustomerById(customerID);
+        LocalDateTime exprieDate = LocalDateTime.now();
+
         Credit credit = new Credit(
                 submittedCredit.getOriginalTerm(),
                 submittedCredit.getRemainingTerm(),
                 submittedCredit.getOriginalCreditAmount(),
                 submittedCredit.getRemainingCreditAmount(),
-                customer);
+                customer,
+                exprieDate.plusMonths(submittedCredit.getOriginalTerm()));
 
 
         creditService.createCredit(credit);
