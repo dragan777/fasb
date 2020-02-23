@@ -1,6 +1,7 @@
 package com.fasb.service;
 
 
+import com.fasb.api.requests.PayoffCreditReq;
 import com.fasb.dao.AccountDao;
 import com.fasb.dao.CreditDao;
 import com.fasb.model.Account;
@@ -17,6 +18,9 @@ public class CreditService {
     CreditDao creditDao;
 
 
+    @Autowired
+    AccountDao accountDao;
+
 
     public Credit createCredit(Credit credit){
         creditDao.save(credit);
@@ -29,5 +33,17 @@ public class CreditService {
 
     public List<Credit> getCreditsByCustomerId(int customerId){
         return  creditDao.findByCustomerId(customerId);
+    }
+
+    public Credit payoffCredit(PayoffCreditReq payoffCreditReq){
+        Credit credit = creditDao.findById(payoffCreditReq.getCreditID()).get();
+        Account account = accountDao.findById(payoffCreditReq.getAccointID()).get();
+        credit.setRemainingCreditAmount(credit.getOriginalCreditAmount() - payoffCreditReq.getSumToPayoff());
+        credit.setRemainingTerm(credit.getOriginalTerm() -1);
+
+        account.setBalance(account.getBalance() - payoffCreditReq.getSumToPayoff());
+        accountDao.save(account);
+        creditDao.save(credit);
+        return credit;
     }
 }
