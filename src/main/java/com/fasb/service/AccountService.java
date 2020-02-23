@@ -36,4 +36,8 @@ public class AccountService {
     public List<Account> getAccounts(){
         return  accountDao.findAll();
     }
+
+    public List<Account> getAccountsByCustomerId(int customerId){
+        return  accountDao.findByCustomerId(customerId);
+    }
 }
