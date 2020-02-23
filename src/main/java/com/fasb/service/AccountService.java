@@ -5,10 +5,15 @@ import com.fasb.dao.AccountDao;
 
 import com.fasb.model.Account;
 import com.fasb.model.Customer;
+import com.fasb.model.Posting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -17,16 +22,8 @@ public class AccountService {
     @Autowired
     AccountDao accountDao;
 
-    public Long transferMoneyBetweenAccounts(int accountIDFrom, int accountIdTo, int transferValue){
-        Account accountFrom =  accountDao.findById(accountIDFrom).get();
-        Account accountTo = accountDao.findById(accountIdTo).get();
-
-        accountFrom.setBalance(accountFrom.getBalance() - transferValue);
-        accountTo.setBalance(accountTo.getBalance() + transferValue);
-        accountDao.save(accountFrom);
-        accountDao.save(accountTo);
-        return 1l;
-    }
+    @Autowired
+    PostingService postingService;
 
     public Account createAccount(Account account){
         accountDao.save(account);
@@ -39,5 +36,22 @@ public class AccountService {
 
     public List<Account> getAccountsByCustomerId(int customerId){
         return  accountDao.findByCustomerId(customerId);
+    }
+
+    public Posting transferMoneyBetweenAccounts(int accountIDFrom, int accountIdTo, Long transferValue){
+
+        Posting posting = new Posting();
+        Account accountFrom =  accountDao.findById(accountIDFrom).get();
+        Account accountTo = accountDao.findById(accountIdTo).get();
+        accountFrom.setBalance(accountFrom.getBalance() - transferValue);
+        accountTo.setBalance(accountTo.getBalance() + transferValue);
+        accountDao.save(accountFrom);
+        accountDao.save(accountTo);
+        posting.setAccountFrom(accountFrom);
+        posting.setAccountTo(accountTo);
+        posting.setTransferMoneyValue(transferValue);
+        posting.setBookingDate(LocalDateTime.of(LocalDate.now(), LocalTime.now()));
+        postingService.createPosting(posting);
+        return posting;
     }
 }

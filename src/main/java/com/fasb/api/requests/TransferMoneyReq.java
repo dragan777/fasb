@@ -5,7 +5,7 @@ public class TransferMoneyReq {
 
     private int accoundIDfrom;
     private int accoundIDTo;
-    private int transferMoneyValue;
+    private Long transferMoneyValue;
 
     public int getAccoundIDfrom() {
         return accoundIDfrom;
@@ -23,11 +23,11 @@ public class TransferMoneyReq {
         this.accoundIDTo = accoundIDTo;
     }
 
-    public int getTransferMoneyValue() {
+    public Long getTransferMoneyValue() {
         return transferMoneyValue;
     }
 
-    public void setTransferMoneyValue(int transferMoneyValue) {
+    public void setTransferMoneyValue(Long transferMoneyValue) {
         this.transferMoneyValue = transferMoneyValue;
     }
 }

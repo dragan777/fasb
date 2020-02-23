@@ -3,6 +3,7 @@ package com.fasb.api;
 
 import com.fasb.api.requests.TransferMoneyReq;
 import com.fasb.model.Account;
+import com.fasb.model.Posting;
 import com.fasb.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,7 +28,7 @@ public class AccountController {
 
     @PostMapping(value = "/transfer")
     @Transactional
-    public Long transfer(@RequestBody TransferMoneyReq transferMoneyReq) {
+    public Posting transfer(@RequestBody TransferMoneyReq transferMoneyReq) {
         return accountService.transferMoneyBetweenAccounts(transferMoneyReq.getAccoundIDfrom(), transferMoneyReq.getAccoundIDTo(), transferMoneyReq.getTransferMoneyValue());
     }
 
