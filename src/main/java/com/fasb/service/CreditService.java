@@ -26,4 +26,8 @@ public class CreditService {
     public List<Credit> getCredits(){
         return  creditDao.findAll();
     }
+
+    public List<Credit> getCreditsByCustomerId(int customerId){
+        return  creditDao.findByCustomerId(customerId);
+    }
 }

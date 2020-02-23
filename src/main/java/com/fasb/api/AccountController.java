@@ -20,27 +20,22 @@ public class AccountController {
     AccountService accountService;
 
     @GetMapping
-    public List<Account> getAccounts(){
+    public List<Account> getAccounts() {
         return accountService.getAccounts();
     }
 
 
-
     @PostMapping(value = "/transfer")
     @Transactional
-    public Long transfer(@RequestBody TransferMoneyReq transferMoneyReq){
+    public Long transfer(@RequestBody TransferMoneyReq transferMoneyReq) {
         return accountService.transferMoneyBetweenAccounts(transferMoneyReq.getAccoundIDfrom(), transferMoneyReq.getAccoundIDTo(), transferMoneyReq.getTransferMoneyValue());
     }
 
 
     @GetMapping(value = "/{customerID}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Account> getAccountsForCustomer(@PathVariable("customerID") final int customerID){
-       return accountService.getAccountsByCustomerId(customerID);
+    public List<Account> getAccountsForCustomer(@PathVariable("customerID") final int customerID) {
+        return accountService.getAccountsByCustomerId(customerID);
     }
-
-
-
-
 
 
 }
