@@ -38,12 +38,19 @@ public class CreditService {
     public Credit payoffCredit(PayoffCreditReq payoffCreditReq){
         Credit credit = creditDao.findById(payoffCreditReq.getCreditID()).get();
         Account account = accountDao.findById(payoffCreditReq.getAccointID()).get();
-        credit.setRemainingCreditAmount(credit.getOriginalCreditAmount() - payoffCreditReq.getSumToPayoff());
-        credit.setRemainingTerm(credit.getOriginalTerm() -1);
+        return  payoffCredit(account, credit, payoffCreditReq.getSumToPayoff());
+    }
 
-        account.setBalance(account.getBalance() - payoffCreditReq.getSumToPayoff());
+    public Credit payoffCredit(Account account, Credit credit, Long sumToPayoff){
+        credit.setRemainingCreditAmount(credit.getOriginalCreditAmount() - sumToPayoff);
+        credit.setRemainingTerm(credit.getOriginalTerm() -1);
+        account.setBalance(account.getBalance() - sumToPayoff);
         accountDao.save(account);
         creditDao.save(credit);
         return credit;
     }
+    public List<Credit> getExceededCredits(){
+        return  creditDao.findExceededCredits();
+    }
+
 }

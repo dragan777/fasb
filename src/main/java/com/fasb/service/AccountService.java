@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -53,5 +54,12 @@ public class AccountService {
         posting.setBookingDate(LocalDateTime.of(LocalDate.now(), LocalTime.now()));
         postingService.createPosting(posting);
         return posting;
+    }
+
+    public Account getAccountWithHighestBalance(List<Account> accounts){
+        Account maxByBalance = accounts
+                .stream()
+                .min(Comparator.comparing(Account::getBalance)).get();
+        return maxByBalance;
     }
 }

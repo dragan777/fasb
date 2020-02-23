@@ -15,4 +15,8 @@ public interface CreditDao extends JpaRepository<Credit, Integer> {
 
     @Query("select a from Credit a where a.customer.id  = :customerId")
     List<Credit> findByCustomerId(int customerId);
+
+
+    @Query("select a from Credit a where a.remainingCreditAmount  <= 0")
+    List<Credit> findExceededCredits();
 }
