@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestMapping("api/v1/customers")
 @RestController
@@ -77,6 +78,28 @@ public class CustomerController {
         account.setCustomer(customer);
         accountService.createAccount(account);
         return account;
+    }
+
+
+    @Transactional
+    @GetMapping(value = "/balance/{customerID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Long getBalanceForCustomer(int customerID){
+        //TODO REFACTOR AND MOVE TO SERVICE
+        List<Credit> credits = creditService.getCreditsByCustomerId(customerID);
+        List<Account> accounts = accountService.getAccountsByCustomerId(customerID);
+        Long sumOfAllCredits = credits.stream().collect(Collectors.summingLong(o -> o.getRemainingCreditAmount()));
+        Long totalSumOnAllAccounts = accounts.stream().collect(Collectors.summingLong(o -> o.getBalance()));
+        return totalSumOnAllAccounts - sumOfAllCredits;
+    }
+    @Transactional
+    @GetMapping(value = "/balance/institution", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Long getBalanceForInstitution(){
+        //TODO REFACTOR MOVE TO GENERIC OR INSTITUTION CONTROLLER AND MOVE LOGIC FOR SUM IN SERVICE
+        List<Credit> credits = creditService.getCredits();
+        List<Account> accounts = accountService.getAccounts();
+        Long sumOfAllCredits = credits.stream().collect(Collectors.summingLong(o -> o.getRemainingCreditAmount()));
+        Long totalSumOnAllAccounts = accounts.stream().collect(Collectors.summingLong(o -> o.getBalance()));
+        return totalSumOnAllAccounts - sumOfAllCredits;
     }
 
 
