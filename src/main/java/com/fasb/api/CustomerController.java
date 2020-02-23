@@ -52,9 +52,9 @@ public class CustomerController {
     }
 
     @Transactional
-    @PostMapping(value = "/createCredit/{accountID}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Credit createCredit(@PathVariable("accountID") final int accoundID, @RequestBody Credit submittedCredit){
-        Customer customer = customerService.getCustomerById(accoundID);
+    @PostMapping(value = "/createCredit/{customerID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Credit createCredit(@PathVariable("customerID") final int customerID, @RequestBody Credit submittedCredit){
+        Customer customer = customerService.getCustomerById(customerID);
         Credit credit = new Credit(
                 submittedCredit.getOriginalTerm(),
                 submittedCredit.getRemainingTerm(),
@@ -69,10 +69,10 @@ public class CustomerController {
 
 
     @Transactional
-    @PostMapping(value = "/createAccount/{accountID}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Account createAccount(@PathVariable("accountID") final int accoundID, @RequestBody Account submittedAccount){
+    @PostMapping(value = "/createAccount/{customerID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Account createAccount(@PathVariable("customerID") final int customerID, @RequestBody Account submittedAccount){
         Account account = new Account();
-        Customer customer = customerService.getCustomerById(accoundID);
+        Customer customer = customerService.getCustomerById(customerID);
         account.setBalance(submittedAccount.getBalance());
         account.setCustomer(customer);
         accountService.createAccount(account);
