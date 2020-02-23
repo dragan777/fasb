@@ -27,4 +27,9 @@ public class PostingController {
     public List<Posting> getPostingsByDate(@RequestParam String date){
         return postingService.getPostingsByDate(date);
     }
+
+    @GetMapping(value="/all")
+    public List<Posting> getAllPostings(@RequestParam int pageNo, @RequestParam int pageSize, @RequestParam String sortBy, @RequestParam String sortDir){
+        return postingService.getAllPostings(pageNo, pageSize, sortBy, sortDir);
+    }
 }
