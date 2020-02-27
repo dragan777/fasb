@@ -2,18 +2,14 @@ package com.fasb.service;
 
 
 import com.fasb.dao.AccountDao;
-
 import com.fasb.model.Account;
-import com.fasb.model.Customer;
 import com.fasb.model.Posting;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
 
@@ -40,18 +36,11 @@ public class AccountService {
     }
 
     public Posting transferMoneyBetweenAccounts(int accountIDFrom, int accountIdTo, Long transferValue){
-
-        Posting posting = new Posting();
         Account accountFrom =  accountDao.findById(accountIDFrom).get();
         Account accountTo = accountDao.findById(accountIdTo).get();
-        accountFrom.setBalance(accountFrom.getBalance() - transferValue);
-        accountTo.setBalance(accountTo.getBalance() + transferValue);
+        Posting posting = createPostingFromMoneyTransfer(accountFrom,accountTo, transferValue);
         accountDao.save(accountFrom);
         accountDao.save(accountTo);
-        posting.setAccountFrom(accountFrom);
-        posting.setAccountTo(accountTo);
-        posting.setTransferMoneyValue(transferValue);
-        posting.setBookingDate(LocalDateTime.of(LocalDate.now(), LocalTime.now()));
         postingService.createPosting(posting);
         return posting;
     }
@@ -61,5 +50,16 @@ public class AccountService {
                 .stream()
                 .min(Comparator.comparing(Account::getBalance)).get();
         return maxByBalance;
+    }
+
+    public Posting createPostingFromMoneyTransfer(Account accountFrom, Account accountTo, Long transferValue){
+        Posting posting = new Posting();
+        accountFrom.setBalance(accountFrom.getBalance() - transferValue);
+        accountTo.setBalance(accountTo.getBalance() + transferValue);
+        posting.setAccountFrom(accountFrom);
+        posting.setAccountTo(accountTo);
+        posting.setTransferMoneyValue(transferValue);
+        posting.setBookingDate(LocalDateTime.of(LocalDate.now(), LocalTime.now()));
+        return posting;
     }
 }

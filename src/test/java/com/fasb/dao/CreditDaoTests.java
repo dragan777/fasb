@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -33,19 +34,28 @@ public class CreditDaoTests {
 
 
     @Test
-    public void testCustomersDao() {
+    public void testFindByCustomerId() {
         Customer alex = MockDataCreatorUtil.createMockCustomer(entityManager);
         Credit creditForAlex = MockDataCreatorUtil.createMockCreditForCustomer(entityManager,alex, true);
         Credit secondDreditForAlex = MockDataCreatorUtil.createMockCreditForCustomer(entityManager,alex, false);
         List<Credit> credits = creditDao.findByCustomerId(alex.getId());
-        Assert.assertTrue(credits.size()==2);
+        Assert.assertTrue(credits.size() == 2);
 
-
-        List<Credit> exceededCredits = creditDao.findExceededCredits();
-        Assert.assertTrue(exceededCredits.size() == 1);
 
     }
 
+
+    @Test
+    public void testExceedCredits() {
+        Customer alex = MockDataCreatorUtil.createMockCustomer(entityManager);
+        Credit creditForAlex = MockDataCreatorUtil.createMockCreditForCustomer(entityManager,alex, true);
+        Credit secondDreditForAlex = MockDataCreatorUtil.createMockCreditForCustomer(entityManager,alex, false);
+
+        List<Credit> exceededCredits = creditDao.findExceededCredits();
+        Assert.assertTrue(exceededCredits.size() == 1);
+        Assert.assertTrue(exceededCredits.get(0).getExpirationDate().isBefore(LocalDateTime.now()));
+
+    }
 
 
 }

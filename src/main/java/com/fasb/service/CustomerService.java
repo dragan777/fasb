@@ -1,15 +1,12 @@
 package com.fasb.service;
 
 import com.fasb.dao.CustomerDao;
-import com.fasb.model.Account;
-import com.fasb.model.Credit;
 import com.fasb.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
